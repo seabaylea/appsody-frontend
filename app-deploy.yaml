@@ -1,0 +1,45 @@
+apiVersion: appsody.dev/v1beta1
+kind: AppsodyApplication
+metadata:
+  annotations:
+    image.opencontainers.org/created: "2019-11-15T19:54:51Z"
+    stack.appsody.dev/configured: localhost:5000/appsody/nodejs-express:0.2
+    stack.appsody.dev/created: 2019-10-07T10:11:51+0000
+    stack.appsody.dev/revision: 8aeef055d3cfeb849e7475dd2195c84b5c4c5212
+    stack.appsody.dev/tag: appsody/nodejs-express:0.2.7
+  creationTimestamp: null
+  labels:
+    image.opencontainers.org/title: appsody-frontend
+    stack.appsody.dev/version: 0.2.7
+  name: appsody-frontend
+spec:
+  applicationImage: appsody-frontend
+  createKnativeService: false
+  expose: true
+  livenessProbe:
+    failureThreshold: 12
+    httpGet:
+      path: /live
+      port: 3000
+    initialDelaySeconds: 5
+    periodSeconds: 2
+  readinessProbe:
+    failureThreshold: 12
+    httpGet:
+      path: /ready
+      port: 3000
+    initialDelaySeconds: 5
+    periodSeconds: 2
+    timeoutSeconds: 1
+  service:
+    consumers:
+    - serviceName: "appsody-backend"
+      namespace: default
+      category: openapi
+    annotations:
+      prometheus.io/scrape: "true"
+    port: 3000
+    type: NodePort
+  stack: nodejs-express
+  version: 1.0.0
+status: {}
